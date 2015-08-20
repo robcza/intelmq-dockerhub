@@ -11,27 +11,27 @@ RUN apt-get update -y && \
 WORKDIR /tmp/
 RUN git clone https://github.com/certtools/intelmq.git
 WORKDIR /tmp/intelmq
-RUN pip install -r REQUIREMENTS
-RUN python setup.py install
-RUN useradd -d /opt/intelmq -U -s /bin/bash intelmq
-RUN chmod -R 0770 /opt/intelmq
-RUN chown -R intelmq.intelmq /opt/intelmq
+RUN pip install -r REQUIREMENTS && \
+    python setup.py install && \
+    useradd -d /opt/intelmq -U -s /bin/bash intelmq && \
+    chmod -R 0770 /opt/intelmq && \
+    chown -R intelmq.intelmq /opt/intelmq
 
 #ASN lookup setup
 WORKDIR /tmp/
-RUN pip install pyasn --pre
-RUN pyasn_util_download.py --latest
-RUN pyasn_util_convert.py --single *.bz2 ipasn.dat
-RUN mkdir /opt/intelmq/var/lib/bots/asn_lookup
-RUN mv /tmp/ipasn.dat /opt/intelmq/var/lib/bots/asn_lookup/
-RUN chown -R intelmq.intelmq /opt/intelmq/var/lib/bots/asn_lookup
+RUN pip install pyasn --pre && \
+    pyasn_util_download.py --latest && \
+    pyasn_util_convert.py --single *.bz2 ipasn.dat && \
+    mkdir /opt/intelmq/var/lib/bots/asn_lookup && \
+    mv /tmp/ipasn.dat /opt/intelmq/var/lib/bots/asn_lookup/ && \
+    chown -R intelmq.intelmq /opt/intelmq/var/lib/bots/asn_lookup
 
 #GEOIP lookup setup
 ADD http://geolite.maxmind.com/download/geoip/database/GeoLite2-City.mmdb.gz GeoLite2-City.mmdb.gz
-RUN gzip -d GeoLite2-City.mmdb.gz
-RUN mkdir /opt/intelmq/var/lib/bots/maxmind_geoip
-RUN mv GeoLite2-City.mmdb /opt/intelmq/var/lib/bots/maxmind_geoip/
-RUN chown -R intelmq.intelmq /opt/intelmq/var/lib/bots/maxmind_geoip/
+RUN gzip -d GeoLite2-City.mmdb.gz && \
+    mkdir /opt/intelmq/var/lib/bots/maxmind_geoip && \
+    mv GeoLite2-City.mmdb /opt/intelmq/var/lib/bots/maxmind_geoip/ && \
+    chown -R intelmq.intelmq /opt/intelmq/var/lib/bots/maxmind_geoip/
 
 #IntelMQ config
 COPY startup.conf /opt/intelmq/etc/startup.conf
