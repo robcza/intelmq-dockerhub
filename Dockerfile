@@ -39,7 +39,6 @@ COPY runtime.conf /opt/intelmq/etc/runtime.conf
 COPY pipeline.conf /opt/intelmq/etc/pipeline.conf
 COPY system.conf /opt/intelmq/etc/system.conf
 COPY defaults.conf /opt/intelmq/etc/defaults.conf
-COPY harmonization.conf /opt/intelmq/etc/harmonization.conf
 COPY BOTS /opt/intelmq/etc/BOTS
 COPY intelmqstartup.sh /opt/intelmq/bin/intelmqstartup.sh
 RUN chmod +x /opt/intelmq/bin/intelmqstartup.sh
